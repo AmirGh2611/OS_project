@@ -6,10 +6,8 @@ from torch.utils.data import TensorDataset, DataLoader, random_split
 
 def preprocessing(x, y):
     x = x.type(torch.float32)
-    y = y.type(torch.float32)
     x = (x - x.mean()) / x.std()
     x = x.unsqueeze(1)
-    y = y.unsqueeze(1)
     return x, y
 
 
@@ -32,5 +30,5 @@ train_set, valid_set = random_split(train_set, [50000, 10000])
 test_set = TensorDataset(x_test, y_test)
 
 train_loader = DataLoader(train_set, batch_size=256, shuffle=True)
-valid_loader = DataLoader(valid_set, batch_size=256, shuffle=False)
-test_loader = DataLoader(test_set, batch_size=256, shuffle=False)
+valid_loader = DataLoader(valid_set, batch_size=256, shuffle=True)
+test_loader = DataLoader(test_set, batch_size=1024, shuffle=False)
