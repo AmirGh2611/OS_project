@@ -12,7 +12,10 @@ def preprocessing(x, y):
 
 
 t = transforms.Compose([
+    transforms.RandomRotation(10),
+    transforms.RandomAffine(0, translate=(0.1, 0.1)),
     transforms.ToTensor(),
+    transforms.Normalize((0.1307,), (0.3081,))
 ])
 
 train = MNIST(root='./data', train=True, transform=t, download=False)
