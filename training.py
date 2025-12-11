@@ -9,8 +9,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("device: ", device)
 model = ConvNet().to(device)
 loss_fn = nn.CrossEntropyLoss()
-optimizer = optim.SGD(model.parameters(), lr=0.2)
-epoch = 50
+optimizer = optim.Adam(model.parameters(), lr=0.001)
+epoch = 30
 train_loss = []
 model.train()
 for epoch in range(epoch):
