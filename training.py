@@ -12,6 +12,7 @@ loss_fn = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 epoch = 30
 train_loss = []
+loss_thresh = 1
 model.train()
 for epoch in range(epoch):
     for i, (image, label) in enumerate(train_loader):
@@ -20,6 +21,9 @@ for epoch in range(epoch):
         optimizer.zero_grad()
         output = model(image)
         loss = loss_fn(output, label)
+        if loss.item() < loss_thresh:
+            torch.save(model.state_dict(), 'model.ckpt')
+            loss_thresh = loss.item()
         loss.backward()
         optimizer.step()
         train_loss.append(loss.item())
@@ -42,4 +46,3 @@ plt.plot(train_loss)
 plt.plot(valid_loss)
 plt.legend(['Training loss', 'Validation loss'])
 plt.show()
-torch.save(model.state_dict(), 'model.ckpt')
