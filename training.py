@@ -5,7 +5,9 @@ from Net import ConvNet
 from Data import train_loader, valid_loader
 import matplotlib.pyplot as plt
 
-model = ConvNet()
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print("device: ", device)
+model = ConvNet().to(device)
 loss_fn = nn.CrossEntropyLoss()
 optimizer = optim.SGD(model.parameters(), lr=0.2)
 epoch = 50
@@ -13,6 +15,8 @@ train_loss = []
 model.train()
 for epoch in range(epoch):
     for i, (image, label) in enumerate(train_loader):
+        image = image.to(device)
+        label = label.to(device)
         optimizer.zero_grad()
         output = model(image)
         loss = loss_fn(output, label)
@@ -26,6 +30,8 @@ valid_loss = []
 model.eval()
 with torch.no_grad():
     for i, (image, label) in enumerate(valid_loader):
+        image = image.to(device)
+        label = label.to(device)
         output = model(image)
         loss = loss_fn(output, label)
         valid_loss.append(loss.item())
